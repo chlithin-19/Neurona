@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Neurona</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* --- GLOBAL RESETS --- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #F4F6F7; 
+        color: #2C3E50; 
+        background-image: linear-gradient(180deg, #ffffff 0%, #ebf0f5 100%);
+        height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* Background Image Wrapper */
+    #bg{
+        /* Note: Ensure this image file is in the same folder on your laptop */
+        background-image: url("Gemini_Generated_Image_s7q8wrs7q8wrs7q8.jpg");
+        background-size: cover; 
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        height: 100vh; 
+        width: 100%;
+    }
+
+    a { text-decoration: none; color: inherit; transition: opacity 0.2s, color 0.2s; }
+    a:hover { color: #3498DB; }
+
+    /* --- NAVBAR --- */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 40px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        background: rgba(6, 142, 233, 0.9);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: white; 
+    }
+    .logo{
+      width:52px;height:52px;border-radius:16px;
+      background:linear-gradient(135deg,#6366f1,#06b6d4);
+      display:flex;align-items:center;justify-content:center;
+    }
+
+    .nav-links { display: flex; gap: 32px; }
+
+    .nav-links a {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: white; 
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin: 10px;
+    }
+
+    .nav-links a:hover {
+        background-color: #D35400; 
+        transform: scale(1.02);
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        transition: transform 0.1s, background-color 0.2s;
+        margin: 0;
+    }
+    .auth-buttons { display: flex; align-items: center; gap: 20px; }
+
+    .login-link {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: white;
+        cursor: pointer;
+    }
+
+    .signup-btn-small {
+        background-color: #E67E22; 
+        color: white;
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        transition: transform 0.1s, background-color 0.2s;
+        cursor: pointer;
+    }
+
+    .signup-btn-small:hover {
+        background-color: #D35400; 
+        transform: scale(1.02);
+        color: white;
+    }
+
+    /* --- HERO SECTION --- */
+    .hero-section {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding-top: 60px;
+    }
+
+    .hero-content { max-width: 950px; padding: 0 20px; }
+    h1 {
+        font-size: 4rem;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        color: #2C3E50; 
+        margin-bottom: 24px;
+    }
+    .gradient-text {
+        background: linear-gradient(90deg, #2980B9 0%, #3498DB 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: #3498DB; 
+    }
+    .hero-subtext {
+        font-size: 1.25rem;
+        line-height: 1.6;
+        color: #5D6D7E;
+        max-width: 600px;
+        margin: 0 auto 40px auto;
+        font-weight: 400;
+    }
+    .cta-button {
+        display: inline-block;
+        background: linear-gradient(180deg, #E67E22 0%, #D35400 100%);
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        padding: 16px 32px;
+        border-radius: 50px;
+        box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3); 
+        transition: transform 0.2s, box-shadow 0.2s;
+        margin-left: 50px;
+        cursor: pointer;
+    }
+    .cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
+        color: white;
+    }
+    @media (max-width: 768px) {
+        h1 { font-size: 2.5rem; }
+        .nav-links { display: none; }
+        .cta-button { margin-left: 0; margin-top: 20px; }
+    }
+
+    /* --- CORE MODULES SECTION --- */
+    #Core {
+        max-width: 1100px;
+        margin: 80px auto; 
+        padding: 0 24px;
+    }
+
+    .section-title {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0b0b10; 
+        margin-bottom: 24px;
+    }
+
+    .modules-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 24px; 
+    }
+    .module-card {
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0; 
+        border-radius: 8px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: box-shadow 0.2s ease;
+    }
+
+    .module-card:hover { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+    .module-card h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #0b0b10;
+        margin-bottom: 8px;
+    }
+    .module-card p {
+        font-size: 0.95rem;
+        color: #5D6D7E;
+        line-height: 1.5;
+        margin-bottom: 24px;
+    }
+    .card-actions { display: flex; gap: 12px; margin-top: auto; }
+
+    button {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 500;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .btn-open {
+        background-color: white;
+        border: 1px solid #d0d5dd; 
+        color: #344054; 
+    }
+    .btn-open:hover { background-color: #f9fafb; border-color: #b0b6c2; }
+
+    .btn-practice {
+        background-color: #EFF4FF; 
+        border: 1px solid transparent;
+        color: #2C3E50; 
+    }
+    .btn-practice:hover { background-color: #dbeafe; color: #1a2634; }
+
+    @media (max-width: 900px) { .modules-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .modules-grid { grid-template-columns: 1fr; } }
+
+    /* --- AUTH & CONTENT MODAL STYLES --- */
+    .modal {
+        display: none; 
+        position: fixed; 
+        z-index: 2000; 
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        overflow: hidden; /* Prevent body scroll when modal open */
+        background-color: rgba(0,0,0,0.6); 
+        backdrop-filter: blur(5px);
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .modal.active {
+        display: flex;
+    }
+
+    /* Pop-up Animation Keyframes */
+    @keyframes popIn {
+        0% { transform: scale(0.9); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-content {
+        background-color: #ffffff;
+        padding: 40px;
+        border: 1px solid #e0e0e0;
+        width: 90%; 
+        max-width: 420px;
+        border-radius: 16px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        position: relative;
+        animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy effect */
+    }
+
+    .article-modal-content {
+        max-width: 600px;
+        border-top: 5px solid #068ee9;
+        max-height: 80vh;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .close {
+        position: absolute;
+        right: 20px;
+        top: 15px;
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.2s;
+        z-index: 10;
+    }
+    .close:hover { color: #000; }
+    
+    .modal h2 {
+        text-align: center;
+        margin-bottom: 24px;
+        color: #2C3E50;
+        font-size: 1.8rem;
+    }
+
+    /* Form Styles */
+    .form-group { margin-bottom: 20px; }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #34495E;
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #E0E0E0;
+        border-radius: 8px;
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+    
+    .form-group input:focus { border-color: #3498DB; }
+
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #068ee9, #0575c2);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.1s, box-shadow 0.2s;
+    }
+    
+    .btn-submit:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(6, 142, 233, 0.3);
+    }
+
+    .switch-modal {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.9rem;
+        color: #7F8C8D;
+    }
+    
+    .switch-modal a {
+        color: #068ee9;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    
+    .article-body {
+        margin-top: 10px;
+        line-height: 1.7;
+        color: #5D6D7E;
+        font-size: 1rem;
+        text-align: left;
+        overflow-y: auto;
+        padding-right: 10px;
+    }
+
+    .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: white;
+    }
+    .user-avatar {
+        width: 32px; height: 32px; background: #E67E22; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center; font-weight: bold;
+    }
+
+    /* --- CHATBOT WIDGET STYLES --- */
+    
+
+    #chat-toggle-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #068ee9, #06b6d4);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        box-shadow: 0 4px 14px rgba(6, 142, 233, 0.4);
+        cursor: pointer;
+        z-index: 3001; /* Higher than modal */
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s;
+    }
+
+    #chat-toggle-btn:hover {
+        transform: scale(1.1);
+    }
+
+    @media (max-width: 480px) {
+        #chat-widget-container {
+            width: 90%;
+            right: 5%;
+            bottom: 100px;
+            height: 70vh;
+        }
+    }
+  </style>
+
+</head>
+<body>
+ <div id="bg"> 
+    <header class="navbar">
+        <div class="logo-container"> 
+                <div class="logo"><img src="Gemini_Generated_Image_m13us8m13us8m13u-removebg-preview.png" alt="Neurona" height="100px"></div> 
+            Neurona
+        </div>
+
+        <nav class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="#Core">Modules</a>
+            <a href="practice.html">Practice</a>
+            <a href="dashboard.html">Dashboard</a>
+        </nav>
+
+        <div class="auth-buttons" id="authSection">
+            <a onclick="openModal('loginModal')" class="login-link">Sign in</a>
+            <a onclick="openModal('signupModal')" class="signup-btn-small">Sign up</a>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>
+                Improve understanding, memory,<br>
+                <span class="gradient-text">attention, and problem-solving</span>
+            </h1>
+            <p class="hero-subtext">Micro-lessons, interactive exercises, quizzes and a personalized spaced-repetition scheduler—designed to grow your cognitive skills step by step.</p>
+            <a onclick="openModal('signupModal')" class="cta-button">Start Practice</a>
+            <a href="dashboard.html" class="cta-button">View Dashboard</a>
+        </div>
+    </section>
+</div>
+
+<section id="Core">
+    <h2 class="section-title">Core Modules</h2>
+    
+    <div class="modules-grid">
+        <div class="module-card">
+            <h3>Understanding</h3>
+            <p>Short lessons & concept maps to build comprehension.</p>
+            <div class="card-actions">
+                <button class="btn-open">Open</button>
+                <button class="btn-practice"><a href="practice.html">Practice</a></button>
+            </div>
+        </div>
+        <div class="module-card">
+            <h3>Learning</h3>
+            <p>Adaptive micro-lessons + spaced repetition.</p>
+            <div class="card-actions">
+                <button class="btn-open">Open</button>
+                <button class="btn-practice"><a href="practice.html">Practice</a></button>
+            </div>
+        </div>
+        <div class="module-card">
+            <h3>Memory</h3>
+            <p>Flashcards, mnemonics, and review scheduling.</p>
+            <div class="card-actions">
+                <button class="btn-open">Open</button>
+                <button class="btn-practice"><a href="practice.html">Practice</a></button>
+            </div>
+        </div>
+        <div class="module-card">
+            <h3>Decision-making</h3>
+            <p>Scenario-based simulations and feedback.</p>
+            <div class="card-actions">
+                <button class="btn-open">Open</button>
+                <button class="btn-practice"><a href="practice.html">Practice</a></button>
+            </div>
+        </div>
+        <div class="module-card">
+            <h3>Problem-solving</h3>
+            <p>Step-by-step puzzles and worked examples.</p>
+            <div class="card-actions">
+                <button class="btn-open">Open</button>
+                <button class="btn-practice"><a href="practice.html">Practice</a></button>
+            </div>
+        </div>
+        <div class="module-card">
+            <h3>Attention</h3>
+            <p>Focused tasks, timers, and distraction logs.</p>
+            <div class="card-actions">
+                <button class="btn-open">Open</button>
+                <button class="btn-practice"><a href="practice.html">Practice</a></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer style="margin: 40px;padding: 50px; text-align:center; color:#7F8C8D;">
+    &copy;2025 Neurona — built for sharper thinking.
+</footer>
+
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeAllModals()">&times;</span>
+        <h2>Welcome Back</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="loginEmail">Email Address</label>
+                <input type="email" id="loginEmail" required placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" required placeholder="Enter your password">
+            </div>
+            <button type="submit" class="btn-submit">Sign In</button>
+        </form>
+        <div class="switch-modal">
+            <p>Don't have an account? <a onclick="switchToSignup()">Sign up</a></p>
+        </div>
+    </div>
+</div>
+
+<div id="signupModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeAllModals()">&times;</span>
+        <h2>Create Account</h2>
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="signupName">Full Name</label>
+                <input type="text" id="signupName" required placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+                <label for="signupEmail">Email Address</label>
+                <input type="email" id="signupEmail" required placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" required placeholder="Create a password">
+            </div>
+            <button type="submit" class="btn-submit">Create Account</button>
+        </form>
+        <div class="switch-modal">
+            <p>Already have an account? <a onclick="switchToLogin()">Sign in</a></p>
+        </div>
+    </div>
+</div>
+
+<div id="articleModal" class="modal">
+    <div class="modal-content article-modal-content">
+        <span class="close" onclick="closeAllModals()">&times;</span>
+        <h2 id="articleTitle">Module Title</h2>
+        <div class="article-body" id="articleText"></div>
+        <button class="btn-submit" onclick="closeAllModals()" style="margin-top: 20px;">Close Article</button>
+    </div>
+</div>
+
+<button id="chat-toggle-btn">
+    <a href="chatbot.html">💬</a>
+</button>
+
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    
+    let firebaseConfig;
+    let appId = 'default-app';
+
+    // Default placeholder config (Will not work for Auth on localhost without real keys)
+    const localConfig = {
+        apiKey: "AIzaSyCfkGSakNxpZII4CrCDJr28BjTPGG3HYxA",
+  authDomain: "neurona-1903.firebaseapp.com",
+  projectId: "neurona-1903",
+  storageBucket: "neurona-1903.firebasestorage.app",
+  messagingSenderId: "250508955544",
+  appId: "1:250508955544:web:567cd16a0e4749339ce5ed",
+  measurementId: "G-0L8DTJJJS4"
+    };
+
+    try {
+        // Check if we are in the preview environment (has injected variables)
+        if (typeof __firebase_config !== 'undefined') {
+            firebaseConfig = JSON.parse(__firebase_config);
+            appId = __app_id;
+            
+            // Initialize with preview config
+            const app = initializeApp(firebaseConfig);
+            window.auth = getAuth(app); // attach to window for easy access if needed
+            window.db = getFirestore(app);
+            window.appId = appId;
+
+            // Preview-specific token auth
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                 signInWithCustomToken(window.auth, __initial_auth_token).catch(e => console.log("Auth init error", e));
+            }
+        } else {
+            // We are running locally!
+            // Check if user has replaced the placeholders
+            if (localConfig.apiKey === "PASTE_YOUR_API_KEY_HERE") {
+                console.error("FIREBASE CONFIG MISSING: Please open the HTML file and paste your Firebase keys in the 'localConfig' object.");
+                alert("To run this app locally, you must edit the HTML file and add your Firebase Configuration keys. See console for details.");
+            } else {
+                // User has added keys, initialize!
+                const app = initializeApp(localConfig);
+                window.auth = getAuth(app);
+                window.db = getFirestore(app);
+                window.appId = "local-app"; // or your specific app id
+            }
+        }
+    } catch (e) {
+        console.error("Firebase Initialization Error:", e);
+    }
+
+    const authSection = document.getElementById('authSection');
+
+    // 2. AUTH LISTENER (Updates Navbar)
+    if (window.auth) {
+        onAuthStateChanged(window.auth, (user) => {
+            if (user) {
+                const initial = user.displayName ? user.displayName.charAt(0).toUpperCase() : 'U';
+                authSection.innerHTML = `
+                    <div class="user-profile">
+                        <div class="user-avatar">${initial}</div>
+                        <span>${user.displayName || 'User'}</span>
+                        <a href="#" id="logoutLink" style="font-size:0.9rem; color:#ccc; margin-left:8px;">Logout</a>
+                    </div>
+                `;
+                // Logout Logic
+                document.getElementById('logoutLink').addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    await signOut(window.auth);
+                    window.location.reload();
+                });
+                closeAllModals();
+            } else {
+                authSection.innerHTML = `
+                    <a onclick="openModal('loginModal')" class="login-link">Sign in</a>
+                    <a onclick="openModal('signupModal')" class="signup-btn-small">Sign up</a>
+                `;
+            }
+        });
+    }
+
+    // 3. MODAL CONTROLS
+    window.openModal = function(modalId) {
+        document.getElementById(modalId).classList.add('active');
+    }
+
+    window.closeAllModals = function() {
+        document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+    }
+
+    window.switchToSignup = function() {
+        document.getElementById('loginModal').classList.remove('active');
+        document.getElementById('signupModal').classList.add('active');
+    }
+
+    window.switchToLogin = function() {
+        document.getElementById('signupModal').classList.remove('active');
+        document.getElementById('loginModal').classList.add('active');
+    }
+
+    // Close on outside click
+    window.onclick = function(event) {
+        if (event.target.classList.contains('modal')) {
+            closeAllModals();
+        }
+    }
+
+    // 4. FORM LOGIC
+    // Signup
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!window.auth) return alert("Firebase not configured properly.");
+
+        const name = document.getElementById('signupName').value;
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+        const btn = e.target.querySelector('button');
+
+        try {
+            btn.textContent = "Creating...";
+            // A. Create User
+            const userCredential = await createUserWithEmailAndPassword(window.auth, email, password);
+            const user = userCredential.user;
+
+            // B. Update Profile
+            await updateProfile(user, { displayName: name });
+
+            // C. Create Database Doc (Critical for Dashboard)
+            await setDoc(doc(window.db, 'artifacts', window.appId, 'users', user.uid), {
+                displayName: name,
+                email: email,
+                joinedAt: new Date().toISOString(),
+                stats: { weeklyFocus: 0, modulesCompleted: 0, streak: 0 },
+                settings: { focusMode: true, sessionLength: "25 Minutes (Pomodoro)", notifications: true }
+            });
+            
+            alert("Account created! Redirecting...");
+            window.location.href = "home.html";
+
+        } catch (error) {
+            alert("Error: " + error.message);
+        } finally {
+            btn.textContent = "Create Account";
+        }
+    });
+
+    // Login
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!window.auth) return alert("Firebase not configured properly.");
+
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const btn = e.target.querySelector('button');
+
+        try {
+            btn.textContent = "Signing in...";
+            await signInWithEmailAndPassword(window.auth, email, password);
+            alert("Welcome back!");
+            window.location.href = "home.html";
+        } catch (error) {
+            alert("Login failed: " + error.message);
+        } finally {
+            btn.textContent = "Sign In";
+        }
+    });
+
+    // 5. CONTENT LOGIC (Article Modals)
+    const moduleData = {
+        "Understanding": "<p>━━━━━━━━━━━━<br><strong>🧠 CARD 1 — Understanding</strong> <br><br><strong>True understanding goes beyond memorization.</strong> It involves connecting new information to existing mental models.<br>Understanding is the foundation of Cognitive Fit because it bridges information with meaning. When we truly understand something, we don’t just receive data—we interpret it, connect it with past knowledge, and build mental clarity. Cognitive Fit promotes environments where information is presented in a way that aligns with how the brain naturally processes ideas, making understanding faster and more accurate. This improves comprehension, reduces confusion, and strengthens analytical thinking. By focusing on structured explanations, relatable examples, and intuitive design, Cognitive Fit helps users transform passive intake into active insight. As a result, understanding becomes a skill that boosts critical reasoning, improves learning efficiency, and supports smarter decision-making in everyday life.<br><br><strong>Key Cognitive Fit Benefits :</strong> <br>✅ Faster and clearer comprehension<br>✅ Reduces confusion and mental overload<br>✅ Strengthens critical and analytical thinking<br>✅ Converts information into meaningful insight<br>━━━━━━━━━━━━</p>",
+        "Learning": "<p>━━━━━━━━━━━━<br><strong>📘 CARD 2 — Learning</strong><br><br><strong>Learning is a biological process.</strong> When you learn, you are physically changing your brain's structure through neuroplasticity.<br>Learning is a core pillar of Cognitive Fit, as it involves acquiring, applying, and adapting new knowledge in a way that matches how the brain functions best. Cognitive Fit focuses on personalized learning styles, spaced repetition, and engaging sensory inputs that make information easier to absorb and retain. When learning aligns with cognitive strengths, it reduces overload and boosts motivation, helping the brain stay flexible and responsive. This approach turns learning into an active process rather than memorizing facts, enhancing adaptability, curiosity, and long-term growth. By integrating meaningful practice and reflection, Cognitive Fit ensures that learning becomes a continuous skill that sharpens intelligence and prepares the mind for higher-level thinking.<br><br><strong>How Cognitive Fit Enhances Learning: </strong><br>✅ Supports personalized learning pathways <br>✅ Reduces cognitive overload during study <br>✅ Boosts long-term adaptability and curiosity <br>✅ Turns learning into an active, engaging process <br>━━━━━━━━━━━━</p>",
+        "Memory": "<p>━━━━━━━━━━━━<br><strong>🔎 CARD 3 — Memory</strong><br><strong>Memory is not a filing cabinet; it is a reconstruction.</strong> Every time you recall a memory, you modify it.<br>Memory plays a crucial role in Cognitive Fit because it stores, retrieves, and organizes information for future use. Cognitive Fit strengthens memory by encouraging techniques that match how the brain forms neural connections—like chunking, visualization, repetition, and emotional relevance. When information is presented in a cognitively supportive format, recall becomes quicker and more accurate, reducing mental strain and boosting confidence. Strong memory skills enhance learning, problem-solving, and decision-making by providing a reliable knowledge base. By focusing on both short-term processing and long-term retention, Cognitive Fit helps users develop sharper recall, mental clarity, and the ability to apply information effectively in real-life situations.<br><strong>Memory-Boosting Outcomes: </strong><br>✅ Faster recall with reduced effort <br>✅ Stronger long-term storage and retention <br>✅ Improved confidence and mental clarity <br>✅ Better application of knowledge in daily tasks <br>━━━━━━━━━━━━</p>",
+        "Decision-making": "<p>━━━━━━━━━━━━<br><strong>🎯 CARD 4 — Decision-Making</strong><br><strong>Humans are predictably irrational.</strong> Our decisions are often clouded by cognitive biases<br>Decision-making is deeply connected to Cognitive Fit because effective choices rely on how clearly the brain receives, evaluates, and interprets information. When data aligns with cognitive strengths—simple presentation, reduced distractions, and logical structure—decisions become faster and more accurate. Cognitive Fit supports this by minimizing overload and helping individuals compare options with clarity and confidence. Strong decision-making enhances goal setting, planning, and real-world judgment, allowing the mind to respond intelligently rather than react impulsively. By developing this skill, users improve critical thinking, emotional regulation, and risk assessment. Cognitive Fit transforms decision-making into a strategic cognitive ability that empowers smarter actions and better outcomes in everyday life.<br><strong>Decision-Making Advantages: </strong><br>✅ Faster and more confident choices <br>✅ Reduced emotional and cognitive bias <br>✅ Better planning and goal execution <br>✅ Clear evaluation of multiple options <br>━━━━━━━━━━━━</p>",
+        "Problem-solving": "<p>━━━━━━━━━━━━<br><strong>🧩 CARD 5 — Problem-Solving</strong><br><strong>Problems are puzzles waiting for a framework.</strong><br>Problem-solving reflects Cognitive Fit in action, as it requires the brain to analyze situations, identify patterns, and develop solutions efficiently. Cognitive Fit enhances this ability by organizing information in ways that match mental processing—visual aids, step-by-step breakdowns, and clear logic reduce cognitive strain and increase clarity. When problems are approached with structured thinking, the brain becomes more innovative, adaptable, and resilient. This strengthens reasoning skills, creativity, and the ability to handle challenges confidently. By practicing reflective thinking and guided exploration, Cognitive Fit turns problem-solving into a powerful skill that boosts intelligence and prepares individuals for real-life complexities.<br><strong>Cognitive Fit Impact on Problem-Solving:</strong><br>✅ Improves logical and structured thinking<br>✅ Enhances creativity and adaptability<br>✅ Reduces cognitive stress during challenges <br>✅ Builds resilience for real-world situations <br>━━━━━━━━━━━━</p>",
+        "Attention": "<p>━━━━━━━━━━━━<br><strong>🔦 CARD 6 — Attention</strong><br><strong>Attention is the currency of the 21st century.</strong> In a distracted world, focus is a superpower.<br>Attention is essential to Cognitive Fit because it determines where the brain directs its energy and how effectively it processes information. Cognitive Fit supports attention by reducing distractions, enhancing focus, and presenting content in a way that keeps the mind engaged without overload. Strong attention improves comprehension, memory formation, and learning efficiency, allowing the brain to absorb and analyze information with greater accuracy. By building habits like mindful focus, task prioritization, and controlled stimulation, Cognitive Fit strengthens mental endurance and clarity. As attention improves, cognitive performance rises across all areas—making the mind sharper, more disciplined, and better equipped for complex thinking.<br><strong>Attention-Strengthening Highlights:</strong><br>✅ Improved focus and sustained concentration<br>✅ Reduced distraction and mental fatigue<br>✅ Better learning and information processing<br>✅ Increased cognitive control and clarity <br>━━━━━━━━━━━━</p>"
+    };
+
+    document.querySelectorAll('.btn-open').forEach(button => {
+        button.addEventListener('click', function(e) {
+            const card = e.target.closest('.module-card');
+            const title = card.querySelector('h3').innerText;
+            document.getElementById('articleTitle').innerText = title;
+            document.getElementById('articleText').innerHTML = moduleData[title] || "<p>Content coming soon...</p>";
+            openModal('articleModal');
+        });
+    });
+
+</script>
+</body>
+</html>

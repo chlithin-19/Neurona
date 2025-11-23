@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurona - Student Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-navy: #068ee9;
+            --primary-blue: #3498DB;
+            --accent-orange: #E67E22;
+            --bg-color: #F4F6F7;
+            --card-bg: #FFFFFF;
+            --text-dark: #2C3E50;
+            --text-muted: #7F8C8D;
+            --border-color: #E0E0E0;
+            --success-green: #27AE60;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            height: 100vh;
+            overflow: hidden; 
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary-navy);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: -0.02em;
+        }
+
+        .logo{
+            width:52px;height:52px;border-radius:16px;
+            background:linear-gradient(135deg,#6366f1,#06b6d4);
+            display:flex;align-items:center;justify-content:center;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: #BDC3C7; 
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer; /* Make sure it looks clickable */
+        }
+
+        .nav-item a:hover, .nav-item a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            stroke-width: 2;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .avatar-circle {
+            width: 36px;
+            height: 36px;
+            background-color: var(--primary-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        .main-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 32px 40px;
+            position: relative; /* Context for absolute positioning if needed */
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .welcome-text h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-navy);
+        }
+
+        .welcome-text p {
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 16px;
+        }
+
+        .search-bar {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 10px 16px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            width: 250px;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 140px;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .icon-blue { background: #EBF5FB; color: var(--primary-blue); }
+        .icon-green { background: #E9F7EF; color: var(--success-green); }
+        .icon-orange { background: #FEF5E7; color: var(--accent-orange); }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-navy);
+            margin-top: auto;
+        }
+
+        .stat-trend {
+            font-size: 0.85rem;
+            margin-left: 8px;
+        }
+        .trend-up { color: var(--success-green); }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .view-all {
+            color: var(--primary-blue);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            padding-bottom: 40px;
+        }
+
+        .module-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .module-card:hover {
+            box-shadow: 0 8px 24px rgba(44, 62, 80, 0.08);
+        }
+
+        .module-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-navy);
+            margin-bottom: 8px;
+        }
+
+        .module-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+        .progress-container {
+            height: 6px;
+            background-color: #F0F3F4;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-blue);
+            border-radius: 10px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        button {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 8px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1; 
+        }
+
+        .btn-open {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+        }
+        .btn-open:hover { background-color: #f9fafb; border-color: #b0b6c2; }
+
+        .btn-practice {
+            background-color: #EBF5FB;
+            border: 1px solid transparent;
+            color: var(--primary-blue);
+        }
+        .btn-practice:hover { background-color: #D6EAF8; color: #21618C; }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 80px; 
+                padding: 24px 12px;
+                align-items: center;
+            }
+            .nav-item a span, .logo-text, .sidebar-footer span {
+                display: none;
+            }
+            .nav-item a { padding: 12px; justify-content: center; }
+            .logo-container { margin-bottom: 30px; justify-content: center;}
+        }
+
+        @media (max-width: 600px) {
+            .sidebar { display: none; } 
+            .main-content { padding: 20px; }
+            .stats-container { grid-template-columns: 1fr; }
+        }
+
+        /* --- MODAL SETTINGS POPUP STYLES --- */
+        /* 1. Backdrop for the popup */
+        .modal-backdrop {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+            backdrop-filter: blur(4px); /* Blur effect for Cognitive Fit */
+            z-index: 999;
+        }
+
+        /* 2. The Settings Popup Container */
+        .settings-container {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto; /* Scrollable if content is too long */
+            background: white;
+            z-index: 1000;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            padding: 32px;
+            border: 1px solid var(--border-color);
+            margin: 0; /* Reset existing margin */
+        }
+
+        /* Active State Class for JS */
+        .settings-container.active, .modal-backdrop.active {
+            display: block;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -48%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        /* Close Button Style */
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            font-size: 1.8rem;
+            line-height: 1;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            transition: color 0.2s;
+            padding: 4px;
+        }
+        .close-btn:hover {
+            color: var(--primary-navy);
+        }
+
+        /* Keep internal settings styling */
+        .settings-section {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .settings-section h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-navy);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #F0F3F4;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--primary-navy);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus { border-color: var(--primary-blue); }
+        .form-input:disabled { background-color: #f4f4f4; color: #aaa; }
+
+        /* Toggle Switch Row */
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .form-row-text h4 {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-row-text p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Custom Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .3s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider { background-color: var(--primary-blue); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        /* Save Button */
+        .btn-save {
+            background-color: var(--primary-navy);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: block;
+            width: 100%;
+        }
+
+        .btn-save:hover { background-color: #1a252f; }
+
+        /* --- TOAST NOTIFICATION STYLES (NEW) --- */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: var(--primary-navy); /* Matches Theme */
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px 24px;
+            position: fixed;
+            z-index: 2000; /* Sits above the modal */
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 0.95rem;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px; /* Moves up slightly when shown */
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Added Backdrop Element for Modal -->
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+
+    <!-- Added Toast Element for Notifications -->
+    <div id="toast" class="toast">Changes are saved</div>
+
+    <aside class="sidebar">
+        <div class="logo-container"> 
+            <div class="logo"><img src="Gemini_Generated_Image_m13us8m13us8m13u-removebg-preview.png" alt="Neurona" height="100px"></div> 
+            Neurona
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="home.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="dashboard.html" class="active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#Analytics">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    <span>Analytics</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="cognitive.html" >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                    <span>Cognitive Guide</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a id="settings-trigger" href="#">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <div class="user-mini">
+                <div class="avatar-circle" id="nav-avatar">U</div>
+                <span id="nav-username">User</span>
+            </div>
+        </div>
+    </aside>
+    <main class="main-content">
+        
+        <header>
+            <div class="welcome-text">
+                <h1 id="welcome-msg">Welcome back!</h1>
+                <p>You have 2 modules due for review today.</p>
+            </div>
+            <div class="header-actions">
+                <div class="search-bar">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" placeholder="Search topics...">
+                </div>
+            </div>
+        </header>
+        <section class="stats-container">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span>Weekly Focus</span>
+                    <div class="stat-icon icon-blue">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    </div>
+                </div>
+                <div class="stat-value"><span id="stat-focus">0</span> <span style="font-size:1rem; font-weight:500; color:#7F8C8D">hrs</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span>Modules Completed</span>
+                    <div class="stat-icon icon-green">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    </div>
+                </div>
+                <div class="stat-value"><span id="stat-completed">0</span> <span class="stat-trend trend-up">/ 12</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span>Current Streak</span>
+                    <div class="stat-icon icon-orange">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.1.2-2.2.5-3z"></path></svg>
+                    </div>
+                </div>
+                <div class="stat-value"><span id="stat-streak">0</span> <span style="font-size:1rem; font-weight:500; color:#7F8C8D">days</span></div>
+            </div>
+        </section>
+
+        <!-- Core Modules Grid -->
+        <section id="Analytics">
+            <div class="section-header">
+                <h2 class="section-title">Continue Learning</h2>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            
+            <div class="modules-grid">
+                <!-- Card 1: Understanding (Active) -->
+                <div class="module-card">
+                    <div>
+                        <h3>Understanding</h3>
+                        <div class="progress-container">
+                            <div class="progress-fill" style="width: 75%;"></div>
+                        </div>
+                        <p>Short lessons & concept maps to build comprehension.</p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn-open">Details</button>
+                        <button class="btn-practice">Resume</button>
+                    </div>
+                </div>
+
+                <!-- Card 2: Learning -->
+                <div class="module-card">
+                    <div>
+                        <h3>Learning</h3>
+                        <div class="progress-container">
+                            <div class="progress-fill" style="width: 40%;"></div>
+                        </div>
+                        <p>Adaptive micro-lessons + spaced repetition.</p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn-open">Details</button>
+                        <button class="btn-practice">Resume</button>
+                    </div>
+                </div>
+
+                <!-- Card 3: Remembering -->
+                <div class="module-card">
+                    <div>
+                        <h3>Remembering</h3>
+                        <div class="progress-container">
+                            <div class="progress-fill" style="width: 10%;"></div>
+                        </div>
+                        <p>Flashcards, mnemonics, and review scheduling.</p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn-open">Details</button>
+                        <button class="btn-practice">Start</button>
+                    </div>
+                </div>
+
+                <!-- Card 4: Decision Making -->
+                <div class="module-card">
+                    <div>
+                        <h3>Decision-making</h3>
+                        <div class="progress-container">
+                            <div class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                        <p>Scenario-based simulations and feedback.</p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn-open">Details</button>
+                        <button class="btn-practice">Start</button>
+                    </div>
+                </div>
+
+                <!-- Card 5: Problem Solving -->
+                <div class="module-card">
+                    <div>
+                        <h3>Problem-solving</h3>
+                        <div class="progress-container">
+                            <div class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                        <p>Step-by-step puzzles and worked examples.</p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn-open">Details</button>
+                        <button class="btn-practice">Start</button>
+                    </div>
+                </div>
+
+                <!-- Card 6: Attention -->
+                <div class="module-card">
+                    <div>
+                        <h3>Attention</h3>
+                        <div class="progress-container">
+                            <div class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                        <p>Focused tasks, timers, and distraction logs.</p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn-open">Details</button>
+                        <button class="btn-practice">Start</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Settings Modal (Initially Hidden) -->
+        <div class="settings-container" id="settings-modal">
+            
+            <!-- Close Button -->
+            <button class="close-btn" id="close-settings">&times;</button>
+            
+            <!-- Profile Settings -->
+            <div class="settings-section">
+                <h2>Profile Information</h2>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" class="form-input" id="set-name" disabled title="Edit in Auth settings">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" class="form-input" id="set-email" disabled title="Edit in Auth settings">
+                </div>
+            </div>
+
+            <!-- Cognitive Preferences -->
+            <div class="settings-section">
+                <h2>Cognitive Preferences</h2>
+                
+                <!-- Focus Mode Toggle -->
+                <div class="form-row">
+                    <div class="form-row-text">
+                        <h4>Focus Mode</h4>
+                        <p>Hide distraction counters and timers during lessons.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="set-focus">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <!-- Session Length Dropdown -->
+                <div class="form-group">
+                    <label>Default Session Length</label>
+                    <select class="form-input" id="set-session">
+                        <option>15 Minutes (Micro-learning)</option>
+                        <option>25 Minutes (Pomodoro)</option>
+                        <option>45 Minutes (Deep Work)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="settings-section">
+                <h2>Notifications</h2>
+                <div class="form-row">
+                    <div class="form-row-text">
+                        <h4>Daily Study Reminders</h4>
+                        <p>Receive a nudge if you haven't studied by 8 PM.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="set-notify">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <button class="btn-save" id="save-settings-btn">Save Changes</button>
+
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- 1. FIREBASE CONFIGURATION ---
+        // IMPORTANT: Replace these with your actual keys from Firebase Console -> Project Settings -> General
+        let firebaseConfig;
+        let appId = 'default-app';
+
+        const localConfig = {
+            apiKey: "AIzaSyCfkGSakNxpZII4CrCDJr28BjTPGG3HYxA",
+  authDomain: "neurona-1903.firebaseapp.com",
+  projectId: "neurona-1903",
+  storageBucket: "neurona-1903.firebasestorage.app",
+  messagingSenderId: "250508955544",
+  appId: "1:250508955544:web:567cd16a0e4749339ce5ed",
+  measurementId: "G-0L8DTJJJS4"
+        };
+
+        try {
+            if (typeof __firebase_config !== 'undefined') {
+                firebaseConfig = JSON.parse(__firebase_config);
+                appId = __app_id;
+                
+                const app = initializeApp(firebaseConfig);
+                window.auth = getAuth(app);
+                window.db = getFirestore(app);
+                window.appId = appId;
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                     signInWithCustomToken(window.auth, __initial_auth_token).catch(e => console.log("Auth init error", e));
+                }
+            } else {
+                if (localConfig.apiKey === "PASTE_YOUR_API_KEY_HERE") {
+                    console.error("FIREBASE CONFIG MISSING");
+                } else {
+                    const app = initializeApp(localConfig);
+                    window.auth = getAuth(app);
+                    window.db = getFirestore(app);
+                    window.appId = "local-app";
+                }
+            }
+        } catch (e) {
+            console.error("Firebase Initialization Error:", e);
+        }
+
+        let currentUser = null;
+        let userDocRef = null;
+
+        // 2. LIVE DATABASE CONNECTION
+        if (window.auth) {
+            onAuthStateChanged(window.auth, (user) => {
+                if (user) {
+                    currentUser = user;
+                    userDocRef = doc(window.db, 'artifacts', window.appId, 'users', user.uid);
+                    
+                    // A. Listen to Real-time Data Changes
+                    onSnapshot(userDocRef, (docSnap) => {
+                        if (docSnap.exists()) {
+                            const data = docSnap.data();
+                            updateDashboardUI(data);
+                            populateSettingsModal(data);
+                        } else {
+                            console.log("No user data found!");
+                        }
+                    }, (error) => {
+                        console.error("Error listening to data: ", error);
+                    });
+
+                } else {
+                    // No user logged in. Show overlay
+                    document.body.innerHTML = `
+                        <div style="height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'Inter',sans-serif; color:#2C3E50; background-color:#F4F6F7;">
+                            <h1 style="margin-bottom:16px;">Access Restricted</h1>
+                            <p style="color:#7F8C8D; margin-bottom:30px;">Please sign in to view your dashboard.</p>
+                            <a href="home.html" style="padding:12px 24px; background:#068ee9; color:white; text-decoration:none; border-radius:8px; font-weight:500; box-shadow:0 4px 6px rgba(0,0,0,0.1);">Go to Home</a>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        // 3. UI Update Functions
+        function updateDashboardUI(data) {
+            // Welcome Message
+            const name = data.displayName || "Learner";
+            document.getElementById('welcome-msg').innerText = `Welcome back, ${name}!`;
+            
+            // Sidebar Profile
+            document.getElementById('nav-username').innerText = name;
+            document.getElementById('nav-avatar').innerText = name.charAt(0).toUpperCase();
+
+            // Stats Cards
+            if (data.stats) {
+                document.getElementById('stat-focus').innerText = data.stats.weeklyFocus || 0;
+                document.getElementById('stat-completed').innerText = data.stats.modulesCompleted || 0;
+                document.getElementById('stat-streak').innerText = data.stats.streak || 0;
+            }
+        }
+
+        function populateSettingsModal(data) {
+            // Profile
+            document.getElementById('set-name').value = data.displayName || "";
+            document.getElementById('set-email').value = data.email || "";
+
+            // Settings
+            if (data.settings) {
+                document.getElementById('set-focus').checked = data.settings.focusMode;
+                document.getElementById('set-session').value = data.settings.sessionLength || "25 Minutes (Pomodoro)";
+                document.getElementById('set-notify').checked = data.settings.notifications;
+            }
+        }
+
+        // 4. Settings Logic
+        const settingsTrigger = document.getElementById('settings-trigger');
+        const settingsModal = document.getElementById('settings-modal');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const closeSettingsBtn = document.getElementById('close-settings');
+        const saveSettingsBtn = document.getElementById('save-settings-btn');
+        const toast = document.getElementById('toast');
+
+        function openSettings(e) {
+            e.preventDefault();
+            settingsModal.classList.add('active');
+            modalBackdrop.classList.add('active');
+        }
+
+        function closeSettings() {
+            settingsModal.classList.remove('active');
+            modalBackdrop.classList.remove('active');
+        }
+
+        settingsTrigger.addEventListener('click', openSettings);
+        closeSettingsBtn.addEventListener('click', closeSettings);
+        modalBackdrop.addEventListener('click', closeSettings);
+
+        // SAVE DATA BACK TO DATABASE
+        saveSettingsBtn.addEventListener('click', async () => {
+            if (!userDocRef) return;
+
+            const newSettings = {
+                focusMode: document.getElementById('set-focus').checked,
+                sessionLength: document.getElementById('set-session').value,
+                notifications: document.getElementById('set-notify').checked
+            };
+
+            try {
+                saveSettingsBtn.innerText = "Saving...";
+                await updateDoc(userDocRef, {
+                    settings: newSettings
+                });
+
+                // Show Toast
+                toast.innerText = "Settings saved to cloud!";
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    closeSettings(); 
+                }, 1500);
+
+            } catch (e) {
+                console.error(e);
+                alert("Error saving settings");
+            } finally {
+                saveSettingsBtn.innerText = "Save Changes";
+            }
+        });
+
+    </script>
+
+</body>
+</html>

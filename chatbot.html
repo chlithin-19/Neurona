@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Neurona — CognitiveFit Chatbot</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue-50: #eaf6ff;
+    --blue-100: #d7eeff;
+    --blue-200: #bfe0ff;
+    --brand:#007BFF;
+    --bg: #ffffff;
+    --muted:#4d657a;
+    --glass: rgba(255,255,255,0.8);
+    --card-shadow: 0 8px 30px rgba(3,72,158,0.06);
+  }
+  *{box-sizing:border-box;font-family:'Poppins',sans-serif}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:linear-gradient(180deg,var(--bg) 0%, var(--blue-50) 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:28px;
+  }
+
+  .app{
+    width:980px;
+    max-width:98vw;
+    display:grid;
+    grid-template-columns:360px 1fr;
+    gap:20px;
+  }
+
+  /* LEFT: site preview + quick nav */
+  .panel{
+    background:var(--glass);
+    border-radius:16px;
+    padding:18px;
+    box-shadow:var(--card-shadow);
+    border:1px solid rgba(123,183,255,0.25);
+    display:flex;flex-direction:column;
+  }
+
+  .brand{
+    display:flex;align-items:center;gap:12px;margin-bottom:12px;
+  }
+  .logo{
+    width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,var(--brand),#66b1ff);
+    color:white;display:flex;align-items:center;justify-content:center;font-weight:700;
+    box-shadow:0 6px 18px rgba(0,123,255,0.18);
+    font-size:18px;
+  }
+  .brand h1{font-size:18px;color:var(--brand);margin:0}
+  .brand p{font-size:12px;margin:0;color:var(--muted)}
+
+  .sections{
+    margin-top:10px;display:flex;flex-direction:column;gap:8px;
+  }
+  .section-btn{
+    display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;
+    background:transparent;border:1px dashed rgba(0,123,255,0.08);cursor:pointer;
+    transition:0.15s; color:var(--brand); font-weight:600;
+  }
+  .section-btn:hover{transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,123,255,0.06)}
+  .section-btn.small{font-size:13px;padding:8px;border-radius:8px}
+
+  .preview{
+    margin-top:14px;padding:12px;border-radius:12px;background:linear-gradient(180deg,#ffffff, #f3fbff);
+    border:1px solid #e6f6ff;font-size:13px;color:#07315a;
+  }
+  .preview h3{margin:0 0 6px 0;font-size:15px;color:var(--brand)}
+  .preview p{margin:0;color:var(--muted);font-size:13px;line-height:1.35}
+
+  /* RIGHT: chat area */
+  .chat-wrap{
+    display:flex;flex-direction:column;height:720px;min-height:520px;
+  }
+  .chat-top{
+    background:linear-gradient(90deg,#ffffff,#eaffff);
+    padding:14px;border-radius:14px;display:flex;align-items:center;justify-content:space-between;
+    box-shadow:0 6px 18px rgba(3,72,158,0.04);border:1px solid rgba(0,123,255,0.08);
+  }
+  .chat-top .title{display:flex;align-items:center;gap:12px}
+  .chat-top h2{margin:0;color:var(--brand);font-size:18px}
+  .chat-top p{margin:0;color:var(--muted);font-size:13px}
+
+  .chat-body{flex:1;background:linear-gradient(180deg,#f9feff,white);padding:18px;border-radius:12px;margin-top:12px;overflow:auto}
+  .messages{display:flex;flex-direction:column;gap:10px}
+  .msg{max-width:78%;padding:12px 14px;border-radius:14px;line-height:1.4;font-size:14px;animation:fadeIn .18s}
+  .user{align-self:flex-end;background:linear-gradient(180deg,var(--brand),#005fcc);color:white;border-bottom-right-radius:4px}
+  .bot{align-self:flex-start;background:white;color:#02345a;border:1px solid #e6f6ff}
+
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .chat-input{display:flex;gap:10px;padding:12px;margin-top:12px;align-items:center}
+  .chat-input input{flex:1;padding:12px;border-radius:12px;border:1px solid #dff0ff;outline:none}
+  .chat-input input:focus{box-shadow:0 6px 18px rgba(0,123,255,0.08);border-color:var(--brand)}
+  .chat-input button{padding:10px 14px;border-radius:12px;border:none;background:var(--brand);color:white;font-weight:700;cursor:pointer}
+  .icon-btn{background:transparent;border:1px solid rgba(0,0,0,0.06);padding:8px;border-radius:10px;cursor:pointer}
+
+  .controls{display:flex;gap:8px;align-items:center}
+  .small-muted{font-size:12px;color:var(--muted)}
+
+  /* footer small */
+  .footer-note{font-size:12px;color:var(--muted);margin-top:8px}
+
+  /* responsive */
+  @media (max-width:880px){
+    .app{grid-template-columns:1fr;}
+    .chat-wrap{height:640px}
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <div class="panel">
+      <div class="brand">
+        <div class="logo"><div class="logo"><img src="Gemini_Generated_Image_m13us8m13us8m13u-removebg-preview.png" alt="Neurona" height="100px"></div> </div>
+        <div>
+          <h1>Neurona</h1>
+          <p class="small-muted">CognitiveFit — friendly assistant</p>
+        </div>
+      </div>
+
+      <div class="sections" id="sections">
+        <button class="section-btn" onclick="showSection('Home')">🏠 Home</button>
+        <button class="section-btn" onclick="showSection('About')">📘 About</button>
+        <button class="section-btn" onclick="showSection('Contact')">✉️ Contact</button>
+        <button class="section-btn" onclick="showSection('Games')">🎮 Games</button>
+        <button class="section-btn" onclick="showSection('Dashboard')">📊 Dashboard</button>
+        <button class="section-btn small" onclick="askNeurona('Tell me everything about cognitive fit')">✨ Tell me everything about Cognitive Fit</button>
+      </div>
+
+      <div class="preview" id="preview">
+        <h3>Quick preview</h3>
+        <p id="previewText">Click any section above to see Neurona explain that section or ask the chatbot directly.</p>
+      </div>
+
+      <div style="margin-top:auto;margin-top:14px;">
+        <div class="small-muted">Voice</div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <button class="section-btn small" id="voiceToggle">🔊 Speak: Off</button>
+          <button class="section-btn small" onclick="clearChat()">🧹 Clear Chat</button>
+        </div>
+        <p class="footer-note">Neurona is a client-side demo — no data leaves your browser.</p>
+      </div>
+    </div>
+
+    <div class="chat-wrap">
+      <div class="chat-top">
+        <div class="title">
+          <h2>Neurona – CognitiveFit Chatbot</h2>
+          <p class="small-muted">Ask about Home, About, Contact, Games, Dashboard, or Cognitive Fit</p>
+        </div>
+        <div class="controls">
+          <div class="small-muted" id="stats">Messages: 0</div>
+        </div>
+      </div>
+
+      <div class="chat-body" id="chatBody">
+        <div class="messages" id="messages"></div>
+      </div>
+
+      <div style="padding:12px">
+        <div class="chat-input">
+          <input id="userInput" placeholder="Ask Neurona about a section or Cognitive Fit..." onkeydown="if(event.key==='Enter') sendMessage()">
+          <button onclick="sendMessage()">Send</button>
+          <button class="icon-btn" onclick="quickSample()">⚡ Sample</button>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="small-muted">Tip: Try "Explain About" or "Give examples"</div>
+          <div class="small-muted">Voice: <span id="voiceState">Off</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// --- Simple local state ---
+let messageCount = 0;
+let speakEnabled = false;
+let dashboardStats = {questions:0,correctAnswers:0};
+
+// toggle voice
+const voiceToggleBtn = document.getElementById('voiceToggle');
+voiceToggleBtn.addEventListener('click',()=>{
+  speakEnabled = !speakEnabled;
+  voiceToggleBtn.innerText = speakEnabled ? '🔊 Speak: On' : '🔊 Speak: Off';
+  document.getElementById('voiceState').innerText = speakEnabled ? 'On' : 'Off';
+});
+
+// --- Utility: auto-correct small typos ---
+function autoCorrect(text){
+  const map = {
+    'cognitve':'cognitive','cogntive':'cognitive','fitn':'fit','neuronaa':'neurona',
+    'helo':'hello','hii':'hi','recify':'rectify','eror':'error','teh':'the'
+  };
+  let t = text;
+  for(const k in map){
+    const re = new RegExp('\\b'+k+'\\b','gi');
+    t = t.replace(re,map[k]);
+  }
+  return t;
+}
+
+// --- Add message to chat ---
+function addMessage(text, who='bot', meta=null){
+  const msgWrap = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg ' + (who==='user' ? 'user' : 'bot');
+  if(meta && meta.html) div.innerHTML = meta.html;
+  else div.innerText = text;
+  msgWrap.appendChild(div);
+  msgWrap.parentElement.scrollTop = msgWrap.parentElement.scrollHeight;
+  messageCount++;
+  updateStats();
+  if(who==='bot' && speakEnabled){ speakText(stripHtml(text)); }
+}
+
+function stripHtml(s){ const d = document.createElement('div'); d.innerHTML = s; return d.textContent || d.innerText || ''; }
+
+function updateStats(){
+  document.getElementById('stats').innerText = 'Messages: ' + messageCount;
+}
+
+function clearChat(){
+  document.getElementById('messages').innerHTML = '';
+  messageCount=0; dashboardStats = {questions:0,correctAnswers:0}; updateStats();
+  addMessage('Hello! I am Neurona — ask me about any section of the site or Cognitive Fit. Try: "Explain About" or "Tell me everything about cognitive fit."');
+}
+
+// --- Speak ---
+function speakText(text){
+  if(!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  // choose a neutral voice if possible
+  const voices = window.speechSynthesis.getVoices();
+  if(voices && voices.length) u.voice = voices.find(v=>v.lang.startsWith('en')) || voices[0];
+  u.rate = 1; u.pitch = 1;
+  window.speechSynthesis.cancel(); // stop previous
+  window.speechSynthesis.speak(u);
+}
+
+// --- Prewritten content for sections and cognitive fit ---
+const CONTENT = {
+  'Home': {
+    title:'Home — Neurona',
+    text:`Welcome to Neurona. This site helps you understand and practice Cognitive Fit — aligning display and task structure to improve understanding. Use the chatbot to explore sections, try games to test fit, and check your progress on the Dashboard.`
+  },
+  'About': {
+    title:'About Cognitive Fit',
+    text:`Cognitive Fit is a theory from information visualization and cognitive psychology. It says performance improves when the way information is presented matches the task demands and the user's thinking style.\n\nExamples: For analytical comparison, tables provide exact values; for pattern recognition, graphs are superior. Matching presentation to task reduces mental translation and speeds understanding.`
+  },
+  'Contact': {
+    title:'Contact Neurona',
+    text:`You can use the Contact section to send feedback, request tutorials, or report issues. Since this demo is client-side, pretend the form will email neurona@cognitivefit.example — in a live site this would post to your server.`
+  },
+  'Games': {
+    title:'Cognitive Fit Games',
+    text:`Games are interactive exercises that help users experience cognitive fit. Examples included: Quick chart-vs-table quizzes, memory tasks that change presentation style, and matching exercises that show how presentation affects speed and accuracy.`
+  },
+  'Dashboard': {
+    title:'Dashboard',
+    text:`Dashboard gives a snapshot of your progress: how many quizzes attempted, accuracy, and suggested next exercises. In this demo the Dashboard is local-only and shows basic stats collected during this session.`
+  },
+  'full': {
+    title:'Everything about Cognitive Fit',
+    text:`Cognitive Fit — full guide:\n\n1) Definition:\nCognitive Fit is the match between the problem-solving task and the representation of information. When fit is high, cognitive processing is direct; when low, users must perform extra internal translations.\n\n2) Why it matters:\n- Improves accuracy and speed.\n- Reduces working memory load.\n- Helps design better visualizations, dashboards, and instruction.\n\n3) Classic examples:\n- Tables vs Charts: Tables for precise lookups/comparisons; charts for trend/pattern detection.\n- Spatial layout for navigation tasks; sequential lists for procedural tasks.\n\n4) How to evaluate fit:\n- Specify the task (compare, find max, spot trend).\n- Choose representations that make the task operations direct (e.g., ordering is obvious in a list).\n- Test with users: measure response time and accuracy.\n\n5) Practical tips:\n- Start by asking: what question does the user need to answer?\n- Use multiple representations when users need both exact numbers and patterns (e.g., table + mini-graph).\n- Keep interaction simple and support filtering and highlighting.\n\n6) Research & evidence:\nMany HCI studies show representation-task pairing affects user performance. Cognitive fit is a useful design heuristic when building analytics tools, educational interfaces, and data-driven games.\n\nWant examples, exercises, or a short quiz to test your understanding?` }
+};
+
+// --- Primary logic that interprets queries ---
+function interpretAndReply(raw){
+  const text = autoCorrect(raw).trim();
+  addMessage(text, 'user');
+
+  // simple intent matching
+  const t = text.toLowerCase();
+
+  // Section requests
+  const sections = ['home','about','contact','games','dashboard'];
+  for(const s of sections){
+    if(t===s || t.includes('explain '+s) || t.includes('tell me about '+s) || t.includes('explain '+s)){
+      const key = s.charAt(0).toUpperCase()+s.slice(1);
+      const item = CONTENT[key];
+      addMessage(item.title + '\n\n' + item.text);
+      // update preview
+      document.getElementById('previewText').innerText = item.text;
+      return;
+    }
+  }
+
+  // Full cognitive fit
+  if(t.includes('everything about cognitive fit') || t.includes('tell me everything about cognitive fit') || t==='cognitive fit' || t.includes('explain cognitive')){
+    addMessage(CONTENT.full.title + '\n\n' + CONTENT.full.text);
+    document.getElementById('previewText').innerText = 'Comprehensive guide loaded into chat.';
+    return;
+  }
+
+  // Games triggers
+  if(t.includes('play') || t.includes('game') || t.includes('quiz')){
+    startQuiz(); return;
+  }
+
+  // Dashboard request
+  if(t.includes('stats') || t.includes('dashboard')){
+    const metaHtml = `<strong>Dashboard</strong><br>Questions attempted: ${dashboardStats.questions}<br>Correct answers: ${dashboardStats.correctAnswers}`;
+    addMessage('', 'bot', {html: metaHtml});
+    return;
+  }
+
+  // Contact form simulation
+  if(t.includes('contact') && t.includes('send')){
+    addMessage('Thanks! Your message would be sent to neurona@cognitivefit.example in a live site. (Demo only)'); return;
+  }
+
+  // Ask for examples or exercises
+  if(t.includes('example') || t.includes('examples')){
+    addMessage('Examples of Cognitive Fit:\n1) Table (for exact comparisons) vs Line chart (for trends)\n2) Spatial map (navigation) vs list (ordered tasks).\nWant a short exercise or a quiz? Type "quiz".'); return;
+  }
+
+  // If it looks like a question about definition
+  if(t.startsWith('what') || t.startsWith('why') || t.startsWith('how')){
+    addMessage('Good question. ' + CONTENT.full.text.split('\\n\\n')[0]); return;
+  }
+
+  // Fallback
+  addMessage('I can explain any section (Home, About, Contact, Games, Dashboard) or give a full guide on Cognitive Fit. Try: "Explain About" or "Play quiz".');
+}
+
+// Public send function
+function sendMessage(){
+  const input = document.getElementById('userInput');
+  const txt = input.value.trim();
+  if(!txt) return;
+  interpretAndReply(txt);
+  input.value = '';
+}
+
+function askNeurona(q){ document.getElementById('userInput').value = q; sendMessage(); }
+
+function showSection(name){
+  document.getElementById('previewText').innerText = CONTENT[name].text;
+  askNeurona('Explain ' + name);
+}
+
+// --- Sample quick message ---
+function quickSample(){
+  const samples = [
+    'Explain About', 'Tell me everything about cognitive fit', 'Play a quiz', 'Show dashboard', 'Give examples'
+  ];
+  const s = samples[Math.floor(Math.random()*samples.length)];
+  document.getElementById('userInput').value = s; sendMessage();
+}
+
+// --- Simple quiz game ---
+const QUIZ = [
+  {q:'Which representation is best to spot trends over time?', opts:['Table','Line chart','Raw numbers'], a:1},
+  {q:'Which representation is best for exact value lookup?', opts:['Bar chart','Table','Heatmap'], a:1},
+  {q:'Cognitive Fit improves user performance by?', opts:['Increasing clicks','Reducing mental translation','Adding color'], a:1}
+];
+let currentQuizIndex = -1;
+
+function startQuiz(){
+  currentQuizIndex = 0; dashboardStats.questions = 0; dashboardStats.correctAnswers = 0;
+  addMessage('Starting quick Cognitive Fit quiz. I will ask 3 questions. Answer by clicking an option.');
+  askQuizQuestion();
+}
+
+function askQuizQuestion(){
+  if(currentQuizIndex<0 || currentQuizIndex>=QUIZ.length){
+    addMessage('Quiz complete! Correct: '+dashboardStats.correctAnswers+' / '+dashboardStats.questions);
+    return;
+  }
+  const item = QUIZ[currentQuizIndex];
+  dashboardStats.questions++;
+  // build HTML with buttons
+  let html = `<div style="font-weight:700;margin-bottom:6px">Q${currentQuizIndex+1}: ${item.q}</div>`;
+  item.opts.forEach((o,i)=>{
+    html += `<button style="display:block;margin:6px 0;padding:8px 10px;border-radius:10px;border:1px solid #dfefff;background:#fff;cursor:pointer" onclick="answerQuiz(${currentQuizIndex},${i})">${o}</button>`;
+  });
+  addMessage('', 'bot', {html});
+}
+
+function answerQuiz(qIdx,choice){
+  const item = QUIZ[qIdx];
+  const correct = (choice === item.a);
+  if(correct){ dashboardStats.correctAnswers++; addMessage('✅ Correct!'); }
+  else{ addMessage('❌ Not quite. Correct answer: ' + item.opts[item.a]); }
+  currentQuizIndex++;
+  setTimeout(()=>{ if(currentQuizIndex<QUIZ.length) askQuizQuestion(); else addMessage('Quiz finished — nice work!'); },600);
+}
+
+// start with greeting
+clearChat();
+</script>
+</body>
+</html>

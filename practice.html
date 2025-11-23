@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurona - Practice Arena</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- ORIGINAL STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F4F6F7; 
+            color: #2C3E50; 
+            background-image: linear-gradient(180deg, #ffffff 0%, #ebf0f5 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: opacity 0.2s, color 0.2s;
+        }
+
+        a:hover {
+            color: #3498DB; 
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 40px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background: #068ee9;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: white; 
+        }
+        .logo{
+            width:52px;height:52px;border-radius:16px;
+            background:linear-gradient(135deg,#6366f1,#06b6d4);
+            display:flex;align-items:center;justify-content:center;
+        }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: white; 
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-links a:hover {
+            background-color: #D35400; 
+            transform: scale(1.05);
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin: -8px -20px; /* Counter margin to prevent layout shift */
+            z-index: 1;
+        }
+
+        /* --- AUTH STYLES (Added for Profile) --- */
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .login-link {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: white;
+            cursor: pointer;
+        }
+
+        .signup-btn-small {
+            background-color: #E67E22; 
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: transform 0.1s, background-color 0.2s;
+            cursor: pointer;
+        }
+
+        .signup-btn-small:hover {
+            background-color: #D35400; 
+            transform: scale(1.02);
+            color: white;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+        .user-avatar {
+            width: 32px; height: 32px; background: #E67E22; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-weight: bold;
+        }
+
+        /* --- NEW GRID & GAME STYLES --- */
+        
+        .main-content {
+            padding: 120px 40px 40px 40px; /* Top padding clears navbar */
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #2C3E50;
+        }
+
+        /* Grid Layout matching the screenshot */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #E5E7EB;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: #068ee9;
+        }
+
+        .card-description {
+            font-size: 0.95rem;
+            color: #6B7280;
+            line-height: 1.5;
+            margin-bottom: 24px;
+            flex-grow: 1;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #D1D5DB;
+            color: #374151;
+        }
+
+        .btn-outline:hover {
+            background: #F3F4F6;
+            border-color: #9CA3AF;
+        }
+
+        .btn-primary {
+            background: #EEF2FF;
+            color: #4F46E5;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary:hover {
+            background: #E0E7FF;
+            color: #4338CA;
+        }
+
+        /* --- MODAL SYSTEM --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        /* Added Auth Modal Styles */
+        .modal-content {
+            background-color: #ffffff;
+            padding: 40px;
+            border: 1px solid #e0e0e0;
+            width: 90%; 
+            max-width: 420px;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            position: relative;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* INFO POPUP STYLES */
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 30px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: scale(0.8);
+            opacity: 0;
+        }
+
+        .modal-overlay.active .info-card {
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .info-icon {
+            width: 80px;
+            height: 80px;
+            background: #EEF2FF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            color: #4F46E5;
+            font-size: 2rem;
+        }
+
+        .info-title {
+            font-size: 1.5rem;
+            color: #1F2937;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .info-text {
+            color: #6B7280;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #F3F4F6;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4B5563;
+            font-size: 1.2rem;
+            transition: background 0.2s;
+        }
+
+        .close-modal:hover {
+            background: #E5E7EB;
+            color: #1F2937;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+        }
+
+        /* Form Styles for Auth */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #34495E; font-weight: 500; font-size: 0.9rem; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #E0E0E0; border-radius: 8px; font-size: 1rem; outline: none; }
+        .btn-submit { width: 100%; padding: 12px; background: linear-gradient(135deg, #068ee9, #0575c2); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        .switch-modal { text-align: center; margin-top: 20px; font-size: 0.9rem; color: #7F8C8D; }
+        .switch-modal a { color: #068ee9; font-weight: 600; cursor: pointer; }
+        .close { position: absolute; right: 20px; top: 15px; color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
+
+        /* --- GAME SPECIFIC STYLES --- */
+        /* Sudoku */
+        .sudoku-board { display: grid; grid-template-columns: repeat(9, 1fr); gap: 1px; background: #333; border: 2px solid #333; margin-bottom: 20px; }
+        .sudoku-cell { width: 40px; height: 40px; background: white; border: none; text-align: center; font-size: 1.2rem; color: #333; }
+        .sudoku-cell:focus { background: #e0f2fe; outline: none; }
+        .sudoku-cell.given { background: #f3f4f6; font-weight: bold; color: #000; }
+        .sudoku-cell:nth-child(3n) { border-right: 2px solid #333; }
+        .sudoku-cell:nth-child(9n) { border-right: none; }
+        /* Rock Paper Scissors */
+        .rps-choices { display: flex; gap: 20px; margin-top: 20px; }
+        .rps-btn { width: 80px; height: 80px; border-radius: 50%; border: 4px solid #E5E7EB; background: white; font-size: 2rem; cursor: pointer; transition: transform 0.2s; }
+        .rps-btn:hover { transform: scale(1.1); border-color: #068ee9; }
+        .rps-result { margin-top: 30px; font-size: 1.5rem; font-weight: bold; min-height: 30px; }
+        /* Memory */
+        .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .memory-card { width: 70px; height: 70px; background: #068ee9; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; transition: transform 0.4s; transform-style: preserve-3d; }
+        .memory-card.flipped { background: white; border: 2px solid #068ee9; transform: rotateY(180deg); }
+        .memory-card.matched { background: #10B981; border-color: #10B981; opacity: 0.8; }
+        /* Quiz */
+        .quiz-question { font-size: 1.2rem; margin-bottom: 20px; font-weight: 600; text-align: center; }
+        .quiz-options { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .quiz-btn { padding: 12px; border: 2px solid #E5E7EB; background: white; border-radius: 8px; cursor: pointer; text-align: left; transition: all 0.2s; }
+        .quiz-btn:hover { border-color: #068ee9; background: #F0F9FF; }
+        .quiz-btn.correct { background: #D1FAE5; border-color: #10B981; }
+        .quiz-btn.wrong { background: #FEE2E2; border-color: #EF4444; }
+        /* Sliding Puzzle */
+        .puzzle-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; background: #1F2937; padding: 5px; border-radius: 8px; }
+        .puzzle-tile { width: 80px; height: 80px; background: #E5E7EB; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; cursor: pointer; user-select: none; }
+        .puzzle-tile.empty { background: transparent; cursor: default; }
+        .puzzle-tile:not(.empty):hover { background: #D1D5DB; }
+        /* Utility */
+        .hidden { display: none; }
+        .mt-4 { margin-top: 16px; }
+        .text-center { text-align: center; }
+
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container"> 
+                <div class="logo"><img src="Gemini_Generated_Image_m13us8m13us8m13u-removebg-preview.png" alt="Neurona" height="100px"></div> 
+            Neurona
+        </div>
+
+        <nav class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="home.html#Core">Modules</a>
+            <a href="practice.html">Practice</a>
+            <a href="dashboard.html">Dashboard</a>
+        </nav>
+
+        <div class="auth-buttons" id="authSection">
+            <!-- Auth state handled by JS -->
+            <a href="#" class="login-link" onclick="openAuthModal('loginModal')">Sign in</a>
+            <a href="#" class="signup-btn-small" onclick="openAuthModal('signupModal')">Sign up</a>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <h2 class="section-title">Practice Arena</h2>
+        
+        <div class="modules-grid">
+            <!-- Sudoku Card -->
+            <div class="module-card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-border-all"></i> Sudoku</div>
+                </div>
+                <p class="card-description">Challenge your logic with our classic 9x9 Sudoku puzzles. Fill the grid so every row, column, and box contains digits 1-9.</p>
+                <div class="card-actions">
+                    <button class="btn btn-outline" onclick="openInfo('sudoku')">Open</button>
+                    <button class="btn btn-primary" onclick="openGame('sudoku')">Practice</button>
+                </div>
+            </div>
+
+            <!-- Sliding Puzzle Card -->
+            <div class="module-card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-th"></i> Sliding Puzzle</div>
+                </div>
+                <p class="card-description">Order the numbered tiles by sliding them into the empty space. A classic test of spatial reasoning and planning.</p>
+                <div class="card-actions">
+                    <button class="btn btn-outline" onclick="openInfo('puzzle')">Open</button>
+                    <button class="btn btn-primary" onclick="openGame('puzzle')">Practice</button>
+                </div>
+            </div>
+
+            <!-- Quiz Card -->
+            <div class="module-card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-question-circle"></i> Knowledge Quiz</div>
+                </div>
+                <p class="card-description">Test your general knowledge with rapid-fire questions. How many can you answer correctly in a row?</p>
+                <div class="card-actions">
+                    <button class="btn btn-outline" onclick="openInfo('quiz')">Open</button>
+                    <button class="btn btn-primary" onclick="openGame('quiz')">Practice</button>
+                </div>
+            </div>
+
+            <!-- Rock Paper Scissors Card -->
+            <div class="module-card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-hand-scissors"></i> Rock Paper Scissors</div>
+                </div>
+                <p class="card-description">Play against the computer in this classic decision-making game. Predict the AI and win!</p>
+                <div class="card-actions">
+                    <button class="btn btn-outline" onclick="openInfo('rps')">Open</button>
+                    <button class="btn btn-primary" onclick="openGame('rps')">Practice</button>
+                </div>
+            </div>
+
+            <!-- Card Flip Card -->
+            <div class="module-card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-layer-group"></i> Memory Flip</div>
+                </div>
+                <p class="card-description">Exercise your working memory. Flip cards to find matching pairs before the time runs out.</p>
+                <div class="card-actions">
+                    <button class="btn btn-outline" onclick="openInfo('memory')">Open</button>
+                    <button class="btn btn-primary" onclick="openGame('memory')">Practice</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- AUTH MODALS (LOGIN) -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close" onclick="closeAuthModals()">&times;</span>
+            <h2 style="text-align:center; margin-bottom:24px;">Welcome Back</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required placeholder="Enter your password">
+                </div>
+                <button type="submit" class="btn-submit">Sign In</button>
+            </form>
+            <div class="switch-modal">
+                <p>Don't have an account? <a onclick="switchToSignup()">Sign up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTH MODALS (SIGNUP) -->
+    <div id="signupModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close" onclick="closeAuthModals()">&times;</span>
+            <h2 style="text-align:center; margin-bottom:24px;">Create Account</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" required placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required placeholder="Create a password">
+                </div>
+                <button type="submit" class="btn-submit">Create Account</button>
+            </form>
+            <div class="switch-modal">
+                <p>Already have an account? <a onclick="switchToLogin()">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- INFO MODAL -->
+    <div id="infoModal" class="modal-overlay">
+        <div class="info-card">
+            <button class="close-modal" onclick="closeInfo()">&times;</button>
+            <div class="info-icon">
+                <i id="infoIcon" class="fas fa-brain"></i>
+            </div>
+            <h3 class="info-title" id="infoTitle">Game Benefits</h3>
+            <p class="info-text" id="infoText">
+                Loading content...
+            </p>
+            <button class="btn btn-primary" onclick="closeInfo()">Got it!</button>
+        </div>
+    </div>
+
+    <!-- MODALS FOR GAMES -->
+    <div id="gameModal" class="modal-overlay">
+        <div class="game-container">
+            <button class="close-modal" onclick="closeGame()">&times;</button>
+            
+            <!-- Sudoku Game -->
+            <div id="sudokuGame" class="game-wrapper hidden">
+                <div class="game-header">
+                    <h3>Sudoku Challenge</h3>
+                    <p>Fill in the missing numbers.</p>
+                </div>
+                <div class="game-area">
+                    <div id="sudokuBoard" class="sudoku-board"></div>
+                    <div class="card-actions">
+                        <button class="btn btn-outline" onclick="resetSudoku()">Reset</button>
+                        <button class="btn btn-primary" onclick="checkSudoku()">Check Solution</button>
+                    </div>
+                    <p id="sudokuMessage" class="mt-4"></p>
+                </div>
+            </div>
+
+            <!-- Puzzle Game -->
+            <div id="puzzleGame" class="game-wrapper hidden">
+                <div class="game-header">
+                    <h3>8-Puzzle</h3>
+                    <p>Order tiles 1-8.</p>
+                </div>
+                <div class="game-area">
+                    <div id="puzzleBoard" class="puzzle-board"></div>
+                    <p id="puzzleMessage" class="mt-4"></p>
+                    <button class="btn btn-primary mt-4" onclick="initPuzzle()">Shuffle</button>
+                </div>
+            </div>
+
+            <!-- Quiz Game -->
+            <div id="quizGame" class="game-wrapper hidden">
+                <div class="game-header">
+                    <h3>Quick Quiz</h3>
+                    <p>Score: <span id="quizScore">0</span></p>
+                </div>
+                <div class="game-area" style="width: 100%; display:block;">
+                    <div id="quizContainer">
+                        <div class="quiz-question" id="questionText">Loading...</div>
+                        <div class="quiz-options" id="optionsContainer"></div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary hidden" id="nextQuestionBtn" onclick="nextQuestion()">Next Question</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RPS Game -->
+            <div id="rpsGame" class="game-wrapper hidden">
+                <div class="game-header">
+                    <h3>Rock Paper Scissors</h3>
+                </div>
+                <div class="game-area">
+                    <div class="rps-result" id="rpsStatus">Choose your weapon!</div>
+                    <div class="rps-choices">
+                        <button class="rps-btn" onclick="playRPS('rock')">🪨</button>
+                        <button class="rps-btn" onclick="playRPS('paper')">📄</button>
+                        <button class="rps-btn" onclick="playRPS('scissors')">✂️</button>
+                    </div>
+                    <div class="mt-4 text-center" style="color: #666;">
+                        <p>You vs Computer</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memory Game -->
+            <div id="memoryGame" class="game-wrapper hidden">
+                <div class="game-header">
+                    <h3>Memory Match</h3>
+                    <p>Moves: <span id="memoryMoves">0</span></p>
+                </div>
+                <div class="game-area">
+                    <div id="memoryGrid" class="memory-grid"></div>
+                    <button class="btn btn-outline mt-4" onclick="initMemory()">Restart</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+<footer style="margin: 40px;padding: 50px; text-align:center; color:#7F8C8D;">
+    &copy;2025 Neurona — built for sharper thinking.
+</footer>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- FIREBASE CONFIGURATION ---
+        // IMPORTANT: Replace these with your actual keys from Firebase Console -> Project Settings -> General
+        let firebaseConfig;
+        let appId = 'default-app';
+
+        const localConfig = {
+            apiKey: "AIzaSyCfkGSakNxpZII4CrCDJr28BjTPGG3HYxA",
+  authDomain: "neurona-1903.firebaseapp.com",
+  projectId: "neurona-1903",
+  storageBucket: "neurona-1903.firebasestorage.app",
+  messagingSenderId: "250508955544",
+  appId: "1:250508955544:web:567cd16a0e4749339ce5ed",
+  measurementId: "G-0L8DTJJJS4"
+        };
+
+        try {
+            if (typeof __firebase_config !== 'undefined') {
+                firebaseConfig = JSON.parse(__firebase_config);
+                appId = __app_id;
+                
+                const app = initializeApp(firebaseConfig);
+                window.auth = getAuth(app);
+                window.db = getFirestore(app);
+                window.appId = appId;
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                     signInWithCustomToken(window.auth, __initial_auth_token).catch(e => console.log("Auth init error", e));
+                }
+            } else {
+                if (localConfig.apiKey === "PASTE_YOUR_API_KEY_HERE") {
+                    console.error("FIREBASE CONFIG MISSING");
+                } else {
+                    const app = initializeApp(localConfig);
+                    window.auth = getAuth(app);
+                    window.db = getFirestore(app);
+                    window.appId = "local-app";
+                }
+            }
+        } catch (e) {
+            console.error("Firebase Initialization Error:", e);
+        }
+
+        // --- AUTH LISTENER ---
+        const authSection = document.getElementById('authSection');
+
+        if (window.auth) {
+            onAuthStateChanged(window.auth, (user) => {
+                if (user) {
+                    const initial = user.displayName ? user.displayName.charAt(0).toUpperCase() : 'U';
+                    authSection.innerHTML = `
+                        <div class="user-profile">
+                            <div class="user-avatar">${initial}</div>
+                            <span>${user.displayName || 'User'}</span>
+                            <a href="#" id="logoutLink" style="font-size:0.9rem; color:#ccc; margin-left:8px;">Logout</a>
+                        </div>
+                    `;
+                    document.getElementById('logoutLink').addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        await signOut(window.auth);
+                        window.location.reload();
+                    });
+                    // Close auth modals if open
+                    closeAuthModals();
+                } else {
+                    authSection.innerHTML = `
+                        <a href="#" class="login-link" onclick="openAuthModal('loginModal')">Sign in</a>
+                        <a href="#" class="signup-btn-small" onclick="openAuthModal('signupModal')">Sign up</a>
+                    `;
+                }
+            });
+        }
+
+        // --- AUTH MODAL LOGIC ---
+        window.openAuthModal = function(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        window.closeAuthModals = function() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('signupModal').classList.remove('active');
+        }
+
+        window.switchToSignup = function() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('signupModal').classList.add('active');
+        }
+
+        window.switchToLogin = function() {
+            document.getElementById('signupModal').classList.remove('active');
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        // --- AUTH FORM HANDLERS ---
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!window.auth) return alert("Firebase not configured.");
+
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const btn = e.target.querySelector('button');
+
+            try {
+                btn.textContent = "Creating...";
+                const userCredential = await createUserWithEmailAndPassword(window.auth, email, password);
+                const user = userCredential.user;
+                await updateProfile(user, { displayName: name });
+                await setDoc(doc(window.db, 'artifacts', window.appId, 'users', user.uid), {
+                    displayName: name,
+                    email: email,
+                    joinedAt: new Date().toISOString(),
+                    stats: { weeklyFocus: 0, modulesCompleted: 0, streak: 0 },
+                    settings: { focusMode: true, sessionLength: "25 Minutes (Pomodoro)", notifications: true }
+                });
+                alert("Account created!");
+                // Auth listener will handle UI update
+            } catch (error) {
+                alert("Error: " + error.message);
+            } finally {
+                btn.textContent = "Create Account";
+            }
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!window.auth) return alert("Firebase not configured.");
+
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const btn = e.target.querySelector('button');
+
+            try {
+                btn.textContent = "Signing in...";
+                await signInWithEmailAndPassword(window.auth, email, password);
+                // Auth listener handles UI
+            } catch (error) {
+                alert("Login failed: " + error.message);
+            } finally {
+                btn.textContent = "Sign In";
+            }
+        });
+
+    </script>
+
+    <script>
+        // --- EXISTING GAME LOGIC ---
+        // (Kept your original game logic intact here)
+        
+        const infoData = {
+            'sudoku': {
+                title: "Cognitive Benefits: Sudoku",
+                text: "Sudoku stimulates the logical thinking part of your brain. It improves concentration, enhances pattern recognition, and delays cognitive decline by keeping neural pathways active.",
+                icon: "fas fa-border-all"
+            },
+            'puzzle': {
+                title: "Cognitive Benefits: Sliding Puzzle",
+                text: "Sliding puzzles enhance spatial intelligence and problem-solving skills. They force your brain to visualize future moves and organize visual information, boosting fluid intelligence.",
+                icon: "fas fa-th"
+            },
+            'quiz': {
+                title: "Cognitive Benefits: Knowledge Quiz",
+                text: "Quizzes rely on rapid memory recall, strengthening the connections between neurons. This activity enhances general knowledge retention and improves information retrieval speed.",
+                icon: "fas fa-question-circle"
+            },
+            'rps': {
+                title: "Cognitive Benefits: Strategy",
+                text: "Even simple games like Rock Paper Scissors engage the prefrontal cortex. Trying to predict an opponent's move based on patterns refines decision-making and strategic planning.",
+                icon: "fas fa-hand-scissors"
+            },
+            'memory': {
+                title: "Cognitive Benefits: Memory Flip",
+                text: "This game directly targets working memory. Remembering locations and matching symbols strengthens the hippocampus, which is crucial for short-term memory and learning.",
+                icon: "fas fa-layer-group"
+            }
+        };
+
+        function openInfo(gameKey) {
+            const data = infoData[gameKey];
+            document.getElementById('infoTitle').innerText = data.title;
+            document.getElementById('infoText').innerText = data.text;
+            document.getElementById('infoIcon').className = data.icon;
+            document.getElementById('infoModal').classList.add('active');
+        }
+
+        function closeInfo() {
+            document.getElementById('infoModal').classList.remove('active');
+        }
+
+        const modal = document.getElementById('gameModal');
+        const games = ['sudokuGame', 'puzzleGame', 'quizGame', 'rpsGame', 'memoryGame'];
+
+        function openGame(gameId) {
+            modal.classList.add('active');
+            games.forEach(id => document.getElementById(id).classList.add('hidden'));
+            const selectedGame = document.getElementById(gameId + 'Game');
+            selectedGame.classList.remove('hidden');
+
+            if(gameId === 'sudoku') initSudoku();
+            if(gameId === 'puzzle') initPuzzle();
+            if(gameId === 'quiz') initQuiz();
+            if(gameId === 'rps') initRPS();
+            if(gameId === 'memory') initMemory();
+        }
+
+        function closeGame() {
+            modal.classList.remove('active');
+        }
+        
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.classList.remove('active');
+            }
+        }
+
+        // --- SUDOKU LOGIC ---
+        const sudokuSolution = [
+            [5,3,4,6,7,8,9,1,2], [6,7,2,1,9,5,3,4,8], [1,9,8,3,4,2,5,6,7],
+            [8,5,9,7,6,1,4,2,3], [4,2,6,8,5,3,7,9,1], [7,1,3,9,2,4,8,5,6],
+            [9,6,1,5,3,7,2,8,4], [2,8,7,4,1,9,6,3,5], [3,4,5,2,8,6,1,7,9]
+        ];
+        const sudokuInitial = [
+            [5,3,0,0,7,0,0,0,0], [6,0,0,1,9,5,0,0,0], [0,9,8,0,0,0,0,6,0],
+            [8,0,0,0,6,0,0,0,3], [4,0,0,8,0,3,0,0,1], [7,0,0,0,2,0,0,0,6],
+            [0,6,0,0,0,0,2,8,0], [0,0,0,4,1,9,0,0,5], [0,0,0,0,8,0,0,7,9]
+        ];
+
+        function initSudoku() {
+            const board = document.getElementById('sudokuBoard');
+            board.innerHTML = '';
+            document.getElementById('sudokuMessage').innerText = '';
+            for(let i=0; i<9; i++) {
+                for(let j=0; j<9; j++) {
+                    const input = document.createElement('input');
+                    input.type = 'text'; 
+                    input.maxLength = 1;
+                    input.className = 'sudoku-cell';
+                    if ((i + 1) % 3 === 0 && i < 8) input.style.borderBottom = "2px solid #333";
+                    if ((j + 1) % 3 === 0 && j < 8) input.style.borderRight = "2px solid #333";
+                    if(sudokuInitial[i][j] !== 0) {
+                        input.value = sudokuInitial[i][j];
+                        input.readOnly = true;
+                        input.classList.add('given');
+                    } else {
+                        input.dataset.row = i;
+                        input.dataset.col = j;
+                        input.addEventListener('input', function(e) {
+                            this.value = this.value.replace(/[^1-9]/g, '');
+                        });
+                    }
+                    board.appendChild(input);
+                }
+            }
+        }
+        function resetSudoku() { initSudoku(); }
+        function checkSudoku() {
+            const inputs = document.querySelectorAll('.sudoku-cell:not(.given)');
+            let correct = true;
+            let filled = true;
+            inputs.forEach(input => {
+                if(!input.value) filled = false;
+                const r = parseInt(input.dataset.row);
+                const c = parseInt(input.dataset.col);
+                if(parseInt(input.value) !== sudokuSolution[r][c]) {
+                    correct = false;
+                    input.style.color = 'red';
+                } else {
+                    input.style.color = 'green';
+                }
+            });
+            const msg = document.getElementById('sudokuMessage');
+            if (!filled) { msg.innerText = "Finish the board first!"; msg.style.color = "orange"; }
+            else if (correct) { msg.innerText = "Correct! Well done!"; msg.style.color = "green"; }
+            else { msg.innerText = "Some errors found. Keep trying!"; msg.style.color = "red"; }
+        }
+
+        // --- PUZZLE LOGIC ---
+        let puzzleState = [1,2,3,4,5,6,7,8,0];
+        function initPuzzle() {
+            do { puzzleState.sort(() => Math.random() - 0.5); } while (!isSolvable(puzzleState));
+            renderPuzzle();
+            document.getElementById('puzzleMessage').innerText = '';
+        }
+        function isSolvable(arr) {
+            let inv = 0;
+            for(let i=0; i<arr.length; i++) {
+                for(let j=i+1; j<arr.length; j++) {
+                    if(arr[i] && arr[j] && arr[i] > arr[j]) inv++;
+                }
+            }
+            return inv % 2 === 0;
+        }
+        function renderPuzzle() {
+            const board = document.getElementById('puzzleBoard');
+            board.innerHTML = '';
+            puzzleState.forEach((val, idx) => {
+                const tile = document.createElement('div');
+                tile.className = `puzzle-tile ${val === 0 ? 'empty' : ''}`;
+                tile.innerText = val === 0 ? '' : val;
+                tile.onclick = () => moveTile(idx);
+                board.appendChild(tile);
+            });
+            checkPuzzleWin();
+        }
+        function moveTile(idx) {
+            const emptyIdx = puzzleState.indexOf(0);
+            const row = Math.floor(idx / 3);
+            const col = idx % 3;
+            const emptyRow = Math.floor(emptyIdx / 3);
+            const emptyCol = emptyIdx % 3;
+            if (Math.abs(row - emptyRow) + Math.abs(col - emptyCol) === 1) {
+                [puzzleState[idx], puzzleState[emptyIdx]] = [puzzleState[emptyIdx], puzzleState[idx]];
+                renderPuzzle();
+            }
+        }
+        function checkPuzzleWin() {
+            if(puzzleState.join('') === "123456780") {
+                document.getElementById('puzzleMessage').innerText = "Solved!";
+                document.getElementById('puzzleMessage').style.color = "green";
+            }
+        }
+
+        // --- QUIZ LOGIC ---
+        const questions = [
+            { q: "What is the capital of France?", a: ["Berlin", "Madrid", "Paris", "Rome"], c: 2 },
+            { q: "Which planet is known as the Red Planet?", a: ["Earth", "Mars", "Jupiter", "Venus"], c: 1 },
+            { q: "What is 5 x 5?", a: ["20", "25", "30", "35"], c: 1 },
+            { q: "Who wrote 'Hamlet'?", a: ["Dickens", "Shakespeare", "Hemingway", "Austen"], c: 1 },
+            { q: "What is the largest mammal?", a: ["Elephant", "Blue Whale", "Giraffe", "Hippo"], c: 1 }
+        ];
+        let currentQIndex = 0;
+        let score = 0;
+        function initQuiz() {
+            currentQIndex = 0; score = 0;
+            document.getElementById('quizScore').innerText = score;
+            loadQuestion();
+        }
+        function loadQuestion() {
+            const q = questions[currentQIndex];
+            document.getElementById('questionText').innerText = q.q;
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            document.getElementById('nextQuestionBtn').classList.add('hidden');
+            q.a.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(idx, q.c, btn);
+                container.appendChild(btn);
+            });
+        }
+        function checkAnswer(selected, correct, btnElem) {
+            const btns = document.querySelectorAll('.quiz-btn');
+            btns.forEach(b => b.disabled = true);
+            if (selected === correct) {
+                btnElem.classList.add('correct');
+                score++;
+                document.getElementById('quizScore').innerText = score;
+            } else {
+                btnElem.classList.add('wrong');
+                btns[correct].classList.add('correct');
+            }
+            if (currentQIndex < questions.length - 1) {
+                document.getElementById('nextQuestionBtn').classList.remove('hidden');
+            } else {
+                document.getElementById('questionText').innerText += " (Quiz Finished!)";
+            }
+        }
+        function nextQuestion() { currentQIndex++; loadQuestion(); }
+
+        // --- RPS LOGIC ---
+        function initRPS() { document.getElementById('rpsStatus').innerText = "Choose your weapon!"; }
+        function playRPS(choice) {
+            const opts = ['rock', 'paper', 'scissors'];
+            const emojis = { rock: '🪨', paper: '📄', scissors: '✂️' };
+            const cpu = opts[Math.floor(Math.random() * 3)];
+            let result = "";
+            if (choice === cpu) result = "It's a Tie!";
+            else if ((choice === 'rock' && cpu === 'scissors') || (choice === 'paper' && cpu === 'rock') || (choice === 'scissors' && cpu === 'paper')) result = "You Win!";
+            else result = "Computer Wins!";
+            document.getElementById('rpsStatus').innerHTML = `You: ${emojis[choice]} vs CPU: ${emojis[cpu]} <br> <span style="color: ${result === 'You Win!' ? 'green' : result === 'Computer Wins!' ? 'red' : 'orange'}">${result}</span>`;
+        }
+
+        // --- MEMORY LOGIC ---
+        const memoryIcons = ['🍎','🍎','🍌','🍌','🍇','🍇','🍒','🍒','🍍','🍍','🥝','🥝','🥥','🥥','🍉','🍉'];
+        let memoryState = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let moves = 0;
+        function initMemory() {
+            matchedPairs = 0; moves = 0; flippedCards = [];
+            document.getElementById('memoryMoves').innerText = moves;
+            memoryState = [...memoryIcons].sort(() => Math.random() - 0.5);
+            const grid = document.getElementById('memoryGrid');
+            grid.innerHTML = '';
+            memoryState.forEach((icon, idx) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.dataset.icon = icon;
+                card.dataset.index = idx;
+                card.onclick = () => flipCard(card);
+                card.innerHTML = ''; 
+                grid.appendChild(card);
+            });
+        }
+        function flipCard(card) {
+            if (card.classList.contains('flipped') || card.classList.contains('matched') || flippedCards.length >= 2) return;
+            card.classList.add('flipped');
+            card.innerText = card.dataset.icon;
+            flippedCards.push(card);
+            if (flippedCards.length === 2) {
+                moves++;
+                document.getElementById('memoryMoves').innerText = moves;
+                checkMatch();
+            }
+        }
+        function checkMatch() {
+            const [c1, c2] = flippedCards;
+            if (c1.dataset.icon === c2.dataset.icon) {
+                c1.classList.add('matched');
+                c2.classList.add('matched');
+                matchedPairs++;
+                flippedCards = [];
+                if (matchedPairs === 8) setTimeout(() => alert('You won in ' + moves + ' moves!'), 500);
+            } else {
+                setTimeout(() => {
+                    c1.classList.remove('flipped');
+                    c1.innerText = '';
+                    c2.classList.remove('flipped');
+                    c2.innerText = '';
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        // Expose functions to window for onclicks
+        window.resetSudoku = resetSudoku;
+        window.checkSudoku = checkSudoku;
+        window.initPuzzle = initPuzzle;
+        window.nextQuestion = nextQuestion;
+        window.openInfo = openInfo;
+        window.closeInfo = closeInfo;
+        window.openGame = openGame;
+        window.closeGame = closeGame;
+        window.initMemory = initMemory;
+        window.playRPS = playRPS;
+
+    </script>
+</body>
+</html>
